@@ -2,7 +2,7 @@
 
 % Size of variable x
 N = 32;
-% Normalized frequency [0,N/2) of initial guess x0
+% Normalized frequency [0,N) of initial guess x0
 f = 1;
 
 %% Do not edit below this line.
@@ -24,7 +24,7 @@ A = spdiags(tmpB,[-1,0,1],N,N);
 b = zeros(N,1);
 % Create initial solution x0
 t = linspace(0+1/N,1-1/N,N)';
-x0 = sin( 2*pi*t );
+x0 = sin( pi*f*t );
 
 tmpn = N;
 % NOTE: always doing the same number of small grids does NOT result in

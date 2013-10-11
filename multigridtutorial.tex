@@ -76,7 +76,9 @@
         tutorial is the Laplace equation in 1D with Dirichlet boundary
         conditions.
   \begin{align}
-   Au &\defeq -\Delta u = 0 \defeq f \label{eq:laplace} \\
+   Au &= f, \; \text{where} \label{eq:laplace} \\
+   Au &= -\Delta u = - \nabla \cdot \nabla u, \; \text{and} \nonumber \\
+   f &= 0 \nonumber \\
    \text{s.t.} \; & u_0 = u_{n+1} = 0 \nonumber
   \end{align}
   \item In this case, the Laplace operator $\Delta$ can be represented by
@@ -194,7 +196,43 @@
    \caption{Convergence rate and upper bound for convergence rate of Jacobi
             method on our model problem.}
   \end{figure}
+  \item In fact, the eigenvalues of $R$ range from $\mu_1^h \approx 1-\pi^2h^2/2$
+        to $\mu_n^h \approx -\mu_1^h$.
+  \item \textbf{Important}: notice that low-frequency eigenfunctions ($i\ll n$)
+        of $A$ correspond to $\mu_i \approx 1$ and high-frequency eigenfunctions
+        ($i \approx n$) correspond to $\mu_i \approx -1$.
+  \item This means that very high and very low frequency components of error $e$
+        are very slow to converge.
+  \item On the flip side, mid-frequency components correspond to
+        $\mu_i \approx 0$ and converge very quickly indeed.
+  \begin{figure}
+   \includegraphics[width=6cm]{images/jacobiConvergence_freq.pdf}
+   \caption{$n=32$. High and low-frequency components ($k \approx 1$ or
+            $k \approx 32$) converge slowly, while mid-frequency components
+            converge quickly.}
+  \end{figure}
  \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Gauss-Seidel}
+ \begin{itemize}
+  \item Another simple relaxation method is \textbf{Gauss-Seidel}.
+  \item Instead of always using the old values of $u$ to get $u_(\text{new})$,
+        it uses the new values immediately after computing them to solve each
+        equation.
+  \begin{align}
+   u_{i\text{(new)}} \leftarrow \frac{u_{i-1\text{(new)}}+u_{i+1}+f_i}{2}
+  \end{align}
+  \item In operator notation, this is
+  \begin{align}
+   u \leftarrow (D-L)^{-1}Uu + (D-L)^{-1}f
+  \end{align}
+  \item So, the iteration matrix in this case is $R=(D-L)^{-1}U$.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Damped Jacobi}
+ 
 \end{frame}
 
 \section{Nested Iteration}%====================================================

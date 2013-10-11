@@ -1,7 +1,7 @@
 %% This script loads the  Laplace problem specified by:
 
 % Size of variable x
-N = 64;
+N = 32;
 % Normalized frequency [0,N/2) of initial guess x0
 f = 1;
 
@@ -9,21 +9,21 @@ f = 1;
 tmpB = zeros(N,3);
 
 % Simple Laplacian
-% tmpB(:,1) = -ones(N,1);
-% tmpB(1:end,2) = 2*ones(N,1);
-% tmpB(:,3) = -ones(N,1);
+tmpB(:,1) = -ones(N,1);
+tmpB(1:end,2) = 2*ones(N,1);
+tmpB(:,3) = -ones(N,1);
 
 % Without boundary effects
-tmpB(:,1) = -ones(N,1);
-tmpB(2:end-1,2) = 2*ones(N-2,1); tmpB(1,2) = 1; tmpB(end,2) = 1;
-tmpB(:,3) = -ones(N,1);
+%tmpB(:,1) = -ones(N,1);
+%tmpB(2:end-1,2) = 2*ones(N-2,1); tmpB(1,2) = 1; tmpB(end,2) = 1;
+%tmpB(:,3) = -ones(N,1);
 
 % Create sparse matrix
 A = spdiags(tmpB,[-1,0,1],N,N);
 % Create rhs
 b = zeros(N,1);
 % Create initial solution x0
-t = linspace(0,1,N)';
+t = linspace(0+1/N,1-1/N,N)';
 x0 = sin( 2*pi*t );
 
 tmpn = N;

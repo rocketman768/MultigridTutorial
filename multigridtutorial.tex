@@ -238,10 +238,10 @@
    u \leftarrow (D-L)^{-1}Uu + (D-L)^{-1}f
   \end{align}
   \item So, the iteration matrix in this case is $R=(D-L)^{-1}U$.
-  \item It turns out that $\rho(R) \leq \left[\rho(R_J)\right]^{0.5} \leq 1-\frac{\pi h}{4}$.
+  \item It turns out that $\rho(R) \leq \left[\rho(R_J)\right]^{2}$.
   \item So, it converges twice as fast as the Jacobi method.
   \item For the proof, see
-        \hyperlink{gaussSeidelProof}{\beamergotobutton{GS Spectral Radius Proof}}
+        \hyperlink{gaussSeidelProof}{\beamergotobutton{GS Spectrum Proof}}
  \end{itemize}
 \end{frame}
 
@@ -256,16 +256,31 @@
   \item What if we could manipulate $R_J$ to get better convergence for some
         of those frequencies?
   \item $R_J(\omega) \defeq (1-\omega) I + \omega R_J$.
+  \item This is called \textbf{damping}.
   \item In this case, we have $\mu_i^h(\omega) = 1 - \omega + \omega \cos(i \pi h)$.
   \item If we are concerned about the high frequences, then it suffices to
-        consider $i \pi h = \pi/2$ and $i \pi h = \pi$. We call the corresponding
+        consider $i \pi h \approx \pi/2$ and $i \pi h \approx \pi$. We call the corresponding
         eigenvalues $\mu_\text{mid}$ and $\mu_\text{high}$.
   \item $\mu_\text{mid} \approx 1-\omega$, $\mu_\text{high} \approx 1-2\omega$.
   \item If we choose $\omega=2/3$, then that reduces the magnitude of the mid
-        and high-frequency eigenvalues to $1/3$.
+        and high-frequency eigenvalues to $1/3$, leaving the low-frequency
+        eigenvalues relatively unchanged.
+  \begin{figure}
+   \includegraphics[width=6cm]{images/dampedJacobi.pdf}
+  \end{figure}
  \end{itemize}
-
 \end{frame}
+
+\begin{frame}[allowframebreaks]{Damped Gauss-Seidel}
+ \begin{itemize}
+  \item We can also apply damping to the Gauss-Seidel iteration.
+  \begin{align}
+   R_G(\omega) = (1-\omega)I + \omega R_J.
+  \end{align}
+  \item Since $\mu_i^h = \cos^2(i\pi h)$, $\mu_i^h(\omega) = 1 - \omega + \omega \cos^2(i\pi h)$.
+ \end{itemize}
+\end{frame}
+
 
 \section{Nested Iteration}%====================================================
 
@@ -277,65 +292,49 @@
 
 \section*{Extra Material}%=====================================================
 
-\begin{frame}[label=gaussSeidelProof]{Gauss-Seidel Spectral Radius I}
+\begin{frame}[label=gaussSeidelProof]{Gauss-Seidel Spectrum I}
  % NOTE: have to split up theorem and proof, and not use the proof environment
  %       because beamer does not properly split it across slides.
  \begin{theorem}
-  $\rho(R) \leq 1-\frac{\pi h}{4}$.
+  $\mu_i^h = \cos^2(i\pi h), \; v_j^i = \cos^j(i\pi h)\sin(ij\pi h)$
  \end{theorem}
   \begin{beamercolorbox}{titlelike}
    Proof
   \end{beamercolorbox}
+  
+  Note that $Rv=\mu v$ is:
   \begin{align}
-   R^TR &= L(D-U)^{-1}(D-L)^{-1}U \nonumber \\
-        &= L\left[ (D-L)(D-U) \right]^{-1}U \nonumber \\
-        &= L(D^2 -DU -LD +LU)^{-1}U \nonumber
+   \mu\left(2 \begin{bmatrix}v_1\\ \vdots \\ v_{n-1} \\ v_n \end{bmatrix} - \begin{bmatrix} 0 \\ v_1 \\ \vdots \\ v_{n-1} \end{bmatrix} \right) = \begin{bmatrix}v_2\\ \vdots \\ v_n \\ 0\end{bmatrix}.
   \end{align}
-  In our case, $D=2I$, and
+
+  So, it is sufficient to show that
   \begin{align}
-   LU = \begin{bmatrix}0 & 0\\0 & I_{n-1}\end{bmatrix}.
+   v_j^i/\lambda_i = 2v_{j-1}^i - v_{j-2}^i. \nonumber
   \end{align}
-\end{frame}
-\begin{frame}{Gauss-Seidel Spectral Radius II}
-  So,
+  First, note the identity:
   \begin{align}
-   R^TR &= L\left[ D(D-U-L) +LU \right]^{-1}U \nonumber \\
-        &= L(2A+LU)^{-1}U
-  \end{align}
-  This implies that the spectral radius (which is also a norm) follows
-  the triangle inequality
-  \begin{align}
-   \rho(R^TR) \leq \rho(L)\left[\rho(2A+LU)\right]^{-1}\rho(U) \nonumber
-  \end{align}
-  Since $\rho(L) \leq 1$ and $\rho(U) \leq 1$, we have
-  \begin{align}
-   \rho(R^TR) \leq \left[\rho(2A+LU)\right]^{-1} \nonumber
-  \end{align}
-  Notice
-  \begin{align}
-   \rho(2A+LU) \geq 2\pi^2h^2+1. \nonumber
-  \end{align}
-  This gives
-  \begin{align}
-   \rho(R^TR) \leq \frac{1}{1+2\pi^2h^2}. \nonumber
+   \sin(u)+\sin(v) = 2\sin\left(\frac{u+v}{2}\right)\cos\left(\frac{u-v}{2}\right) \nonumber
   \end{align}
 \end{frame}
-\begin{frame}{Gauss-Seidel Spectral Radius III}
-  Since, for $0 \leq x \leq 3$, we have $1/(1+x) \leq 1-x/4$, this gives
+\begin{frame}{Gauss-Seidel Spectrum II}
+  So, we have
   \begin{align}
-   \rho(R^TR) \leq 1-\frac{\pi^2h^2}{2} \nonumber
+   \sin(ji\pi h) + \sin((j-2)i\pi h) = 2 \sin\left( (j-1)i\pi h \right) \cos\left( i\pi h \right). \nonumber
   \end{align}
-  for $0 \leq 2\pi^2h^2 \leq 3$ or equivalently $n \geq 2$.
-  Further, since $x^{0.5} \leq 1+x/2$, and $x^2 \leq x \; \forall 0 \leq x \leq 1$,
-   \begin{align}
-    \rho(R) &\leq \left[ \rho(R^TR) \right]^{0.5} \leq (1-\frac{\pi^2h^2}{2})^{0.5} \nonumber \\
-            &\leq (1-\frac{\pi h}{2})^{0.5} \nonumber \\
-            &\leq 1-\frac{\pi h}{4}. \nonumber
-   \end{align}
+  This implies
+  \begin{align}
+   \sin(ji\pi h) = \cos(i \pi h) \sin((j-1)i\pi h) - \sin((j-2)i\pi h). \nonumber
+  \end{align}
+  Then, we get
+  \begin{align}
+   \cos^{j-2}(i\pi h)\sin(ji\pi h) =& \; 2\cos^{j-1}(i \pi h) \sin((j-1)i\pi h) \nonumber \\
+                                      &- \cos^{j-2}\sin((j-2)i\pi h), \nonumber
+  \end{align}
+  which is the original recurrence relation.
+  So, the proposed eigenpairs describe the spectrum.
   \qed \\
   \hyperlink{gaussSeidel}{\beamergotobutton{Back}}
 \end{frame}
-
 
 % References ==================================================================
 \begin{frame}[allowframebreaks]

@@ -224,7 +224,7 @@
  \end{itemize}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Gauss-Seidel}
+\begin{frame}[label=gaussSeidel]{Gauss-Seidel}
  \begin{itemize}
   \item Another simple relaxation method is \textbf{Gauss-Seidel}.
   \item Instead of always using the old values of $u$ to get $u_(\text{new})$,
@@ -238,9 +238,10 @@
    u \leftarrow (D-L)^{-1}Uu + (D-L)^{-1}f
   \end{align}
   \item So, the iteration matrix in this case is $R=(D-L)^{-1}U$.
-  \item Though I'm not clear how to prove it,
-        $\rho(R) \leq \rho^{0.5}(R_J) \leq 1-\frac{\pi h}{4}$.
+  \item It turns out that $\rho(R) \leq \left[\rho(R_J)\right]^{0.5} \leq 1-\frac{\pi h}{4}$.
   \item So, it converges twice as fast as the Jacobi method.
+  \item For the proof, see
+        \hyperlink{gaussSeidelProof}{\beamergotobutton{GS Spectral Radius Proof}}
  \end{itemize}
 \end{frame}
 
@@ -255,6 +256,68 @@
 \section{Analysis}%============================================================
 
 \section{Recent Work}%=========================================================
+
+\section*{Extra Material}%=====================================================
+
+\begin{frame}[label=gaussSeidelProof]{Gauss-Seidel Spectral Radius I}
+ % NOTE: have to split up theorem and proof, and not use the proof environment
+ %       because beamer does not properly split it across slides.
+ \begin{theorem}
+  $\rho(R) \leq 1-\frac{\pi h}{4}$.
+ \end{theorem}
+  \begin{beamercolorbox}{titlelike}
+   Proof
+  \end{beamercolorbox}
+  \begin{align}
+   R^TR &= L(D-U)^{-1}(D-L)^{-1}U \nonumber \\
+        &= L\left[ (D-L)(D-U) \right]^{-1}U \nonumber \\
+        &= L(D^2 -DU -LD +LU)^{-1}U \nonumber
+  \end{align}
+  In our case, $D=2I$, and
+  \begin{align}
+   LU = \begin{bmatrix}0 & 0\\0 & I_{n-1}\end{bmatrix}.
+  \end{align}
+\end{frame}
+\begin{frame}{Gauss-Seidel Spectral Radius II}
+  So,
+  \begin{align}
+   R^TR &= L\left[ D(D-U-L) +LU \right]^{-1}U \nonumber \\
+        &= L(2A+LU)^{-1}U
+  \end{align}
+  This implies that the spectral radius (which is also a norm) follows
+  the triangle inequality
+  \begin{align}
+   \rho(R^TR) \leq \rho(L)\left[\rho(2A+LU)\right]^{-1}\rho(U) \nonumber
+  \end{align}
+  Since $\rho(L) \leq 1$ and $\rho(U) \leq 1$, we have
+  \begin{align}
+   \rho(R^TR) \leq \left[\rho(2A+LU)\right]^{-1} \nonumber
+  \end{align}
+  Notice
+  \begin{align}
+   \rho(2A+LU) \geq 2\pi^2h^2+1. \nonumber
+  \end{align}
+  This gives
+  \begin{align}
+   \rho(R^TR) \leq \frac{1}{1+2\pi^2h^2}. \nonumber
+  \end{align}
+\end{frame}
+\begin{frame}{Gauss-Seidel Spectral Radius III}
+  Since, for $0 \leq x \leq 3$, we have $1/(1+x) \leq 1-x/4$, this gives
+  \begin{align}
+   \rho(R^TR) \leq 1-\frac{\pi^2h^2}{2} \nonumber
+  \end{align}
+  for $0 \leq 2\pi^2h^2 \leq 3$ or equivalently $n \geq 2$.
+  Further, since $x^{0.5} \leq 1+x/2$, and $x^2 \leq x \; \forall 0 \leq x \leq 1$,
+   \begin{align}
+    \rho(R) &\leq \left[ \rho(R^TR) \right]^{0.5} \leq (1-\frac{\pi^2h^2}{2})^{0.5} \nonumber \\
+            &\leq (1-\frac{\pi h}{2})^{0.5} \nonumber \\
+            &\leq 1-\frac{\pi h}{4}. \nonumber
+   \end{align}
+  \qed \\
+  \hyperlink{gaussSeidel}{\beamergotobutton{Back}}
+\end{frame}
+
 
 % References ==================================================================
 \begin{frame}[allowframebreaks]

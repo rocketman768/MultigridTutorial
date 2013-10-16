@@ -266,9 +266,7 @@
   \caption{It is obvious that $R_G$ decreases the error magnitude more quickly
            than $R_J$ at all frequencies.}
  \end{figure}
-
 \end{frame}
-
 
 \begin{frame}[allowframebreaks]{Damped Jacobi}
  \begin{itemize}
@@ -303,9 +301,12 @@
    R_G(\omega) = (1-\omega)I + \omega R_J.
   \end{align}
   \item Since $\mu_i^h = \cos^2(i\pi h)$, $\mu_i^h(\omega) = 1 - \omega + \omega \cos^2(i\pi h)$.
-  \item Notice that $0 < \omega < 2$ gives a spectral radius under 1 (convergence).
+  \item Notice that $0 \leq \omega \leq 2$ gives a spectral radius under 1 (convergence).
   \item This iteration with $\omega > 1$ is called
         \textbf{Successive Over-Relaxation} (SOR).
+  \item In contrast with $R_J(\omega)$, notice that we cannot significantly
+        improve the high-frequency convergence, since
+        $\mu_n^h(\omega) \approx 1$ regardless of $\omega$.
  \end{itemize}
 \end{frame}
 
@@ -324,7 +325,7 @@
  % NOTE: have to split up theorem and proof, and not use the proof environment
  %       because beamer does not properly split it across slides.
  \begin{theorem}
-  $\mu_i^h = \cos^2(i\pi h), \; v_j^i = \cos^j(i\pi h)\sin(ij\pi h)$
+  $\mu_i^h = \cos^2(i\pi h), \; v_{(i)j}^h = \cos^j(i\pi h)\sin(ij\pi h)$
  \end{theorem}
   \begin{beamercolorbox}{titlelike}
    Proof
@@ -337,7 +338,7 @@
 
   So, it is sufficient to show that
   \begin{align}
-   v_j^i/\lambda_i = 2v_{j-1}^i - v_{j-2}^i. \nonumber
+   v_{(i)j}/\mu_i = 2v_{(i)j-1} - v_{(i)j-2}. \nonumber
   \end{align}
   First, note the identity:
   \begin{align}

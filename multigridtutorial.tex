@@ -73,13 +73,9 @@
  \end{itemize}
 \end{frame}
 
-\begin{frame}[allowpagebreaks]{Notation}
- 
-\end{frame}
-
 \section{The Motivating Example}%==============================================
 
-\begin{frame}[allowframebreaks]{1D Laplace Problem}
+\begin{frame}{1D Laplace Problem I}
  \begin{itemize}
   \item A simple example that serves to illustrate the major points of this
         tutorial is the Laplace equation in 1D with Dirichlet boundary
@@ -92,15 +88,25 @@
   \end{align}
   \item In this case, the Laplace operator $\Delta$ can be represented by
         convolution with the kernel $[1,-2,1] = [1,-1]\ast[1,-1]$.
-  \begin{figure}
-   \includegraphics[width=6cm]{images/laplaceOperatorExample.pdf}
-  \end{figure}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{1D Laplace Problem II}
+ \begin{figure}
+  \includegraphics[width=6cm]{images/laplaceOperatorExample.pdf}
+ \end{figure}
+ \begin{itemize}
   \item Strictly speaking, if we are approximating the continuous Laplace
         operator, then the kernel is $\frac{1}{h^2}[1,-2,1]$ if the samples
         are spaced $h$ units apart. It's just a scaling factor.
   \item For simplicity, we will assume that the discrete variables are spaced
         $h = 1/(n+1)$ units apart so that $u$ represents a function over the
         unit interval $[0,1]$.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{1D Laplace Problem III}
+ \begin{itemize}
   \item Equation $i$ of \eqref{eq:laplace} reads:
   \begin{align}
    -u_{i-1}+2u_i-u_{i+1} = 0, \; \forall 1 \leq i \leq n
@@ -115,14 +121,17 @@
         $\kappa(A) = \lambda_n^h / \lambda_1^h \approx 4/(\pi^2h^2) = 4(n+1)^2/\pi^2$.
   \item So, the condition number grows as $O(n^2)$ with system size $n$.
   \item We will see that this is the major problem facing standard linear solvers.
-  \begin{figure}
-   \begin{tabular}{cc}
-    \includegraphics[width=4cm]{images/v64_1.pdf} & \includegraphics[width=4cm]{images/v64_2.pdf} \\
-    \includegraphics[width=4cm]{images/v64_31.pdf} & \includegraphics[width=4cm]{images/v64_64.pdf}
-   \end{tabular}
-   \caption{Eigenfunctions of $A$ when $n=64$ ($h=1/65$).}
-  \end{figure}
  \end{itemize}
+\end{frame}
+
+\begin{frame}{1D Laplace Problem IV}
+ \begin{figure}
+  \begin{tabular}{cc}
+   \includegraphics[width=4cm]{images/v64_1.pdf} & \includegraphics[width=4cm]{images/v64_2.pdf} \\
+   \includegraphics[width=4cm]{images/v64_31.pdf} & \includegraphics[width=4cm]{images/v64_64.pdf}
+  \end{tabular}
+  \caption{Eigenfunctions of $A$ when $n=64$ ($h=1/65$).}
+ \end{figure}
 \end{frame}
 
 \section{Relaxation (Iterative Methods)}%======================================
@@ -144,7 +153,7 @@
  \end{itemize}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Relaxation}
+\begin{frame}{Relaxation I}
  \begin{itemize}
   \item In general, we call any method of the following form \textbf{relaxation}:
   \begin{align}
@@ -158,6 +167,11 @@
    r &\defeq f-Au
   \end{align}
   \item This means the original problem is transformed to $Ae=r$.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Relaxation II}
+ \begin{itemize}
   \item Note that $\hat{e} = 0$.
   \begin{align}
    e_{\text{new}} &= \hat{u} - (Ru+g) \\
@@ -175,28 +189,34 @@
  \end{itemize}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Jacobi Convergence Rate}
+\begin{frame}{Jacobi Convergence Rate I}
  \begin{itemize}
   \item Note that for the Jacobi method, the iteration matrix $R=D^{-1}(L+U)$.
   \item What is $\rho(R)$?
   \item We will prove that $\rho(R) \leq 1-\frac{\pi^2 h^2}{2}$
-  \pagebreak
-  \begin{theorem}
-   $\rho(R) \leq 1-\frac{\pi^2 h^2}{2}$
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Jacobi Convergence Rate II}
+ \begin{theorem}
+  $\rho(R) \leq 1-\frac{\pi^2 h^2}{2}$
    
-   \begin{proof}
-    Proof by contradiction. Suppose $\exists y$ s.t. $Ry = (1-\frac{\pi^2 h^2}{2}+\epsilon)y$.
-    Then,
-    \begin{align}
-     Ay &= (D-DR)y = Dy-DRy \nonumber \\
-        &= 2y - 2(1-\frac{\pi^2 h^2}{2}+\epsilon)y \nonumber \\
-        &= (\pi^2 h^2 - 2 \epsilon) y
-    \end{align}
-    So, $y$ is an eigenfunction of $A$ with eigenvalue $\pi^2 h^2 - 2 \epsilon$.
-    But this is a contradiction since $\lambda^h_1 = \pi^2 h^2$.
-   \end{proof}
-  \end{theorem}
-  \pagebreak
+  \begin{proof}
+   Proof by contradiction. Suppose $\exists y$ s.t. $Ry = (1-\frac{\pi^2 h^2}{2}+\epsilon)y$.
+   Then,
+   \begin{align}
+    Ay &= (D-DR)y = Dy-DRy \nonumber \\
+       &= 2y - 2(1-\frac{\pi^2 h^2}{2}+\epsilon)y \nonumber \\
+       &= (\pi^2 h^2 - 2 \epsilon) y
+   \end{align}
+   So, $y$ is an eigenfunction of $A$ with eigenvalue $\pi^2 h^2 - 2 \epsilon$.
+   But this is a contradiction since $\lambda^h_1 = \pi^2 h^2$.
+  \end{proof}
+ \end{theorem}
+\end{frame}
+
+\begin{frame}{Jacobi Convergence Rate III}
+ \begin{itemize}
   \item So, using the Jacobi method, the convergence rate slows quadratically
         with $n$.
   \begin{figure}
@@ -208,6 +228,11 @@
   \end{figure}
   \item In fact, the eigenvalues of $R$ range from $\mu_1^h \approx 1-\pi^2h^2/2$
         to $\mu_n^h \approx -\mu_1^h$.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Jacobi Convergence Rate IV}
+ \begin{itemize}
   \item \textbf{Important}: notice that low-frequency eigenfunctions ($i\ll n$)
         of $A$ correspond to $\mu_i \approx 1$ and high-frequency eigenfunctions
         ($i \approx n$) correspond to $\mu_i \approx -1$.
@@ -215,13 +240,16 @@
         are very slow to converge.
   \item On the flip side, mid-frequency components correspond to
         $\mu_i \approx 0$ and converge very quickly indeed.
-  \begin{figure}
-   \includegraphics[width=6cm]{images/jacobiConvergence_freq.pdf}
-   \caption{$n=32$. High and low-frequency components ($k \approx 1$ or
-            $k \approx 32$) converge slowly, while mid-frequency components
-            converge quickly.}
-  \end{figure}
  \end{itemize}
+\end{frame}
+
+\begin{frame}{Jacobi Convergence Rate V}
+ \begin{figure}
+  \includegraphics[width=6cm]{images/jacobiConvergence_freq.pdf}
+  \caption{$n=32$. High and low-frequency components ($k \approx 1$ or
+           $k \approx 32$) converge slowly, while mid-frequency components
+           converge quickly.}
+ \end{figure}
 \end{frame}
 
 \begin{frame}[label=gaussSeidel]{Gauss-Seidel}
@@ -268,7 +296,7 @@
  \end{figure}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Damped Jacobi}
+\begin{frame}{Damped Jacobi I}
  \begin{itemize}
   \item The Jacobi iteration matrix $R_J$ has eigenvalues
         $\mu_i^h = \cos(i \pi h)$ corresponding to eigenfunctions that are
@@ -284,6 +312,11 @@
   \item If we are concerned about the high frequences, then it suffices to
         consider $i \pi h \approx \pi/2$ and $i \pi h \approx \pi$. We call the corresponding
         eigenvalues $\mu_\text{mid}$ and $\mu_\text{high}$.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Damped Jacobi II}
+ \begin{itemize}
   \item $\mu_\text{mid} \approx 1-\omega$, $\mu_\text{high} \approx 1-2\omega$.
   \item If we choose $\omega=2/3$, then that reduces the magnitude of the mid
         and high-frequency eigenvalues to $1/3$, leaving the low-frequency
@@ -294,7 +327,7 @@
  \end{itemize}
 \end{frame}
 
-\begin{frame}[allowframebreaks]{Damped Gauss-Seidel}
+\begin{frame}{Damped Gauss-Seidel}
  \begin{itemize}
   \item We can also apply damping to the Gauss-Seidel iteration.
   \begin{align}

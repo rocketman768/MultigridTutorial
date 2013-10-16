@@ -290,9 +290,9 @@
 
 \begin{frame}{Gauss-Seidel Spectrum II}
  \begin{figure}
-  \includegraphics[width=6cm]{images/jacobi_vs_gauss_eigs.pdf}
-  \caption{It is obvious that $R_G$ decreases the error magnitude more quickly
-           than $R_J$ at all frequencies.}
+  \includegraphics[width=6cm]{images/gaussConvergence_freq.pdf}
+  \caption{Unlike Jacobi, Gauss-Seidel is quite effective on high-frequency
+           errors.}
  \end{figure}
 \end{frame}
 
@@ -337,9 +337,6 @@
   \item Notice that $0 \leq \omega \leq 2$ gives a spectral radius under 1 (convergence).
   \item This iteration with $\omega > 1$ is called
         \textbf{Successive Over-Relaxation} (SOR).
-  \item In contrast with $R_J(\omega)$, notice that we cannot significantly
-        improve the high-frequency convergence, since
-        $\mu_n^h(\omega) \approx 1$ regardless of $\omega$.
  \end{itemize}
 \end{frame}
 

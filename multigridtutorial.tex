@@ -237,13 +237,38 @@
   \begin{align}
    u \leftarrow (D-L)^{-1}Uu + (D-L)^{-1}f
   \end{align}
-  \item So, the iteration matrix in this case is $R=(D-L)^{-1}U$.
+  \item So, the iteration matrix in this case is $R_G=(D-L)^{-1}U$.
   \item It turns out that $\rho(R) \leq \left[\rho(R_J)\right]^{2}$.
   \item So, it converges twice as fast as the Jacobi method.
   \item For the proof, see
         \hyperlink{gaussSeidelProof}{\beamergotobutton{GS Spectrum Proof}}
  \end{itemize}
 \end{frame}
+
+\begin{frame}{Gauss-Seidel Spectrum I}
+ \begin{itemize}
+  \item Unlike the Jacobi matrix, the eigenfunctions of the Gauss-Seidel matrix
+        are not pure sinusoids, but still go from ``low frequency'' to
+        ``high frequency''.
+ \end{itemize}
+ \begin{figure}
+  \begin{tabular}{cc}
+   \includegraphics[width=3cm]{images/gauss_v64_1.pdf} & \includegraphics[width=3cm]{images/gauss_v64_2.pdf} \\
+   \includegraphics[width=3cm]{images/gauss_v64_31.pdf} & \includegraphics[width=3cm]{images/gauss_v64_64.pdf}
+  \end{tabular}
+  \caption{Eigenfunctions of $R_G$ when $n=64$ ($h=1/65$).}
+ \end{figure}
+\end{frame}
+
+\begin{frame}{Gauss-Seidel Spectrum II}
+ \begin{figure}
+  \includegraphics[width=6cm]{images/jacobi_vs_gauss_eigs.pdf}
+  \caption{It is obvious that $R_G$ decreases the error magnitude more quickly
+           than $R_J$ at all frequencies.}
+ \end{figure}
+
+\end{frame}
+
 
 \begin{frame}[allowframebreaks]{Damped Jacobi}
  \begin{itemize}
@@ -278,6 +303,9 @@
    R_G(\omega) = (1-\omega)I + \omega R_J.
   \end{align}
   \item Since $\mu_i^h = \cos^2(i\pi h)$, $\mu_i^h(\omega) = 1 - \omega + \omega \cos^2(i\pi h)$.
+  \item Notice that $0 < \omega < 2$ gives a spectral radius under 1 (convergence).
+  \item This iteration with $\omega > 1$ is called
+        \textbf{Successive Over-Relaxation} (SOR).
  \end{itemize}
 \end{frame}
 

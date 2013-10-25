@@ -2,6 +2,8 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 \title{A Tutorial on Multigrid Methods}
 \author{Philip Greggory Lee}
@@ -356,6 +358,30 @@
 \section{Nested Iteration}%====================================================
 
 \section{Basic Multigrid Methods}%=============================================
+
+\begin{frame}{V-cycle}
+ \begin{algorithmic}[1]
+  \Function{vcycle}{$u^i$,$f^i$,$\nu_1$,$\nu_2$}
+  \If{$i=1$}
+   \Return \textit{exact} solution $u^i$
+  \EndIf
+  \State \textit{pre-relaxation:} Relax on $A^i\mathbf{u}^i = f^i$ $\nu_1$ times.
+  \State $r^i \gets f^i - A^iu^i$ (compute residual)
+  \State $e^{i-1} \gets$ VCYCLE($e^{i-1} = 0$,$I_i^{i-1}r^i$) (estimate correction)
+  \State $u \gets u + I_{i-1}^i e^{i-1}$. (apply correction)
+  \State \textit{post-relaxation:} Relax on $A^i\mathbf{u}^i = f^i$ $\nu_2$ times.
+  \EndFunction
+ \end{algorithmic}
+
+ \begin{itemize}
+  \item Base case: solve the coarsest problem directly by some means.
+  \item Do Jacobi or Gauss-Seidel relaxation to get rid of high-frequency errors.
+  \item Solve for the coarse correction by recursion on next coarser level.
+  \item Upsample and apply coarse correction.
+  \item Smooth the new estimate by relaxation.
+ \end{itemize}
+\end{frame}
+
 
 \section{Analysis}%============================================================
 

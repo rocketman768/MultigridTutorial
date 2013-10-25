@@ -155,7 +155,7 @@
  \end{itemize}
 \end{frame}
 
-\begin{frame}{Relaxation I}
+\begin{frame}[label=relaxation1]{Relaxation I}
  \begin{itemize}
   \item In general, we call any method of the following form \textbf{relaxation}:
   \begin{align}
@@ -356,6 +356,95 @@
 \end{frame}
 
 \section{Nested Iteration}%====================================================
+
+\begin{frame}{Motivation}
+ \begin{itemize}
+  \item To speed up a linear solver, we need a good initial estimate $u_0$.
+  \item How can we easily compute a good $u_0$?
+  \item If the system has an underlying geometric structure, then we can talk
+        about the system at different resolutions.
+  \item In this case, we can solve the low-resolution versions of the system
+        more easily than the full-resolution system since the problem size
+        becomes smaller.
+  \item Suppose we can solve for a coarse solution $u^{2h}$. Then, a good $u_0$
+        may be the upsampled version $I_{2h}^hu^{2h}$.
+  \item This strategy lends itself to recursion.
+  \item This basic idea is called \textbf{nested iteration}.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Coarse Grids I}
+ \begin{itemize}
+  \item The reason we can solve our problem better on coarse grids is two-fold:
+  \begin{enumerate}
+   \item The system has fewer variables.
+   \item Relaxation converges faster on small grids (remember $\rho(R_J)=1-O(h^2)$).
+  \end{enumerate}
+  \item How do we get coarse systems?
+  \item We let $I_h^{2h}$ be a linear operator that maps a fine-grid vector $u^{h}$
+        to a coarse grid vector $u^{2h}$, and $I_{2h}^h = (I_h^{2h})^T$ be the reverse
+        mapping.
+  \item A typical choice is the \textbf{full-weighting} operator:
+  \begin{align}
+   u_i^{2h} &= u_{2i-1}^h/4 + u_{2i}^h/2 + u_{2i+1}^h/4
+  \end{align}    
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Coarse Grids II}
+ \begin{itemize}
+  \item Then, we can consider solutions to
+  \begin{align}
+   I_h^{2h}Au^h=I_h^{2h}f^h.
+  \end{align}
+  \item However, this is over-determined, so we restrict our search to
+        coarse-grid interpolants $u^h=I_{2h}^hu^{2h}$:
+  \begin{align}
+   I_h^{2h}AI_{2h}^hu^{2h}=I_h^{2h}f^h.
+  \end{align}
+  \item $A^{2h} \defeq I_h^{2h}AI_{2h}^h$ is the coarse system.
+  \item Of course we can keep repeating this to get $A^{4h}$ and so on.
+  \item So, supposing we can exactly solve, say, $u^{16h}$, then we can get
+        an initial approximation $u_0^h = I_{2h}^hI_{4h}^{2h}\ldots I_{16h}^{8h} u^{16h}$.
+  \item This is good if we have no guess, but what can we do when we are already
+        \textit{given} $u_0^h$?
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Nested Estimation of Error}
+ \begin{itemize}
+  \item Recall from \hyperlink{relaxation1}{\beamergotobutton{relaxation}} that
+        iterating on $Au=f$ with an arbitrary guess $u_0$
+        is the same as iterating on $Ae=r$ with an initial guess $e_0=0$.
+  \item So, when $u_0$ is given, we need to think of approximating the error
+        and using it to correct $u$ starting with the na\"{\i}ve guess of $0$.
+  \item To get an approximate answer for $e$, we can use our nested iteration
+        idea, then do the correction.
+  \item The modification is subtle, but important.
+        \begin{algorithmic}[1]
+         \State $r^h \gets f^h - A^hu^h$
+         \State $r^{2h} \gets I_h^{2h} r^h$
+         \State Estimate $A^{2h}e^{2h}=r^{2h}$ for $e^{2h}$ using $e_0^{2h}=0$.
+         \State $u^h \gets u^h + I_{2h}^he^{2h}$
+        \end{algorithmic}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}{Analyzing Nested Iteration}
+ \begin{itemize}
+  \item Note that this structure lends itself to recursion to get the error
+        estimate, operating on progressively coarser grids $4h$, $8h$, and so on.
+  \item How good is this strategy?
+  \item Notice that if the error is \textit{smooth} ($e^h \approx I_{2h}^{h}e^{2h}$),
+        then this should work very well since nothing is lost by solving on
+        the coarse grid.
+  \item But, if the error is not smooth, then we gain nothing.
+  \item \textit{Wait a minute!} Nested iteration works well when the error
+        is smooth, and relaxation works well when the error is oscillatory (rough).
+  \item The two methods are complementary, so can we combine them to get the
+        \textbf{ultimate} solver?
+ \end{itemize}
+\end{frame}
 
 \section{Basic Multigrid Methods}%=============================================
 

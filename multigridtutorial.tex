@@ -22,7 +22,7 @@
 }
 
 \providecommand{\defeq}{\stackrel{\Delta}{=}}
-\providecommand{\abs}[1]{\Bigl\lvert #1 \Bigr\rvert}
+\providecommand{\abs}[1]{\left\lvert #1 \right\rvert}
 \providecommand{\norm}[1]{\left\lVert #1 \right\rVert}
 
 \begin{document}
@@ -88,6 +88,7 @@
    f &= 0 \nonumber \\
    \text{s.t.} \; & u_0 = u_{n+1} = 0 \nonumber
   \end{align}
+  \item There are $n$ free variables $u_1,\dotsc,u_n$, and $A$ is $n \times n$.
   \item In this case, the Laplace operator $\Delta$ can be represented by
         convolution with the kernel $[1,-2,1] = [1,-1]\ast[1,-1]$.
  \end{itemize}
@@ -165,8 +166,8 @@
         point of the iteration: $\hat{u} = R\hat{u}+g$.
   \item For analysis, it is useful to make the transformation
   \begin{align}
-   e &\defeq \hat{u}-u \\
-   r &\defeq f-Au
+   e &\defeq \hat{u}-u \nonumber \\
+   r &\defeq f-Au \nonumber
   \end{align}
   \item This means the original problem is transformed to $Ae=r$.
  \end{itemize}
@@ -176,18 +177,20 @@
  \begin{itemize}
   \item Note that $\hat{e} = 0$.
   \begin{align}
-   e_{\text{new}} &= \hat{u} - (Ru+g) \\
-                  &= \hat{u} - R(\hat{u}-e) - g \\
-                  &= \hat{u} - (\hat{u}-g) + Re - g \\
+   e_{\text{new}} &= \hat{u} - (Ru+g) \nonumber \\
+                  &= \hat{u} - R(\hat{u}-e) - g \nonumber \\
+                  &= \hat{u} - (\hat{u}-g) + Re - g \nonumber \\
                   &= Re
   \end{align}
-  \item So, the error evolution is given by $e \leftarrow Re$.
-  \item Since this iteration must converge to 0, a sufficient condition for
-        convergence is $\rho(R) < 1$, where $\rho$ is the spectral radius.
-  \item So, for any consistent norm $\norm{\cdot}$, a simple upper bound on the convergence rate is
+  \item So, $e_\text{new} = Re$, written in algorithmic form as $e \leftarrow Re$.
+  \item For for any consistent norm $\norm{\cdot}$, we have $\norm{e_\text{new}} \leq \norm{R}\norm{e}$.
+  \item Since $\rho(R) \leq \norm{R}$ for any such norm ($\rho$ is spectral radius), we get
   \begin{align}
-   \frac{\norm{e_{\text{new}}}}{\norm{e}} \leq \rho(R)
+   \frac{\norm{e_{\text{new}}}}{\norm{e}} \leq \rho(R).
   \end{align}
+  \item After $k$ iterations, $\norm{e_k}/\norm{e_0} \leq [\rho(R)]^k$.
+  \item Since this iteration must converge to 0, a sufficient condition for
+        convergence is $\rho(R) < 1$.
  \end{itemize}
 \end{frame}
 
@@ -242,6 +245,11 @@
         are very slow to converge.
   \item On the flip side, mid-frequency components correspond to
         $\mu_i \approx 0$ and converge very quickly indeed.
+  \item To see why, notice we can decompose $e = \sum_i a_i v_i$, where $v_i$
+        are the eigenfunctions of $R$.
+  \item Then, after $k$ iterations, $\norm{e} = \norm{\sum_i a_i \mu_i^k v_i} \leq \abs{a_1\mu_1^k} + \abs{a_n\mu_n^k} + O(\abs{\mu_2^k})$
+  \item We can also see that the $i^\text{th}$ frequency component converges
+        geometrically like $\mu_i^k$.
  \end{itemize}
 \end{frame}
 

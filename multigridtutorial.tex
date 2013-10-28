@@ -183,12 +183,11 @@
                   &= Re
   \end{align}
   \item So, $e_\text{new} = Re$, written in algorithmic form as $e \leftarrow Re$.
-  \item For for any consistent norm $\norm{\cdot}$, we have $\norm{e_\text{new}} \leq \norm{R}\norm{e}$.
-  \item Since $\rho(R) \leq \norm{R}$ for any such norm ($\rho$ is spectral radius), we get
+  \item The eigenvalue equation gives $\norm{e_\text{new}}_2 \leq \rho(R)\norm{e}_2$, or
   \begin{align}
-   \frac{\norm{e_{\text{new}}}}{\norm{e}} \leq \rho(R).
+   \frac{\norm{e_{\text{new}}}_2}{\norm{e}_2} \leq \rho(R).
   \end{align}
-  \item After $k$ iterations, $\norm{e_k}/\norm{e_0} \leq [\rho(R)]^k$.
+  \item After $k$ iterations, $\norm{e_k}_2/\norm{e_0}_2 \leq [\rho(R)]^k$.
   \item Since this iteration must converge to 0, a sufficient condition for
         convergence is $\rho(R) < 1$.
  \end{itemize}

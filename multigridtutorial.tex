@@ -464,8 +464,9 @@
   \State \textit{pre-relaxation:} Relax on $A^i\mathbf{u}^i = f^i$ $\nu_1$ times.
   \State $r^i \gets f^i - A^iu^i$ (compute residual)
   \State $e^{i-1} \gets$ VCYCLE($e^{i-1} = 0$,$I_i^{i-1}r^i$) (estimate correction)
-  \State $u \gets u + I_{i-1}^i e^{i-1}$. (apply correction)
+  \State $u^i \gets u^i + I_{i-1}^i e^{i-1}$. (apply correction)
   \State \textit{post-relaxation:} Relax on $A^i\mathbf{u}^i = f^i$ $\nu_2$ times.
+  \State \Return $u^i$
   \EndFunction
  \end{algorithmic}
 

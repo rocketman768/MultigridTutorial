@@ -195,21 +195,21 @@
 
 \begin{frame}{Jacobi Convergence Rate I}
  \begin{itemize}
-  \item Note that for the Jacobi method, the iteration matrix $R=D^{-1}(L+U)$.
-  \item What is $\rho(R)$?
-  \item We will prove that $\rho(R) \leq 1-\frac{\pi^2 h^2}{2}$
+  \item Note that for the Jacobi method, the iteration matrix $R_J=D^{-1}(L+U)$.
+  \item What is $\rho(R_J)$?
+  \item We will prove that $\rho(R_J) \leq 1-\frac{\pi^2 h^2}{2}$
  \end{itemize}
 \end{frame}
 
 \begin{frame}{Jacobi Convergence Rate II}
  \begin{theorem}
-  $\rho(R) \leq 1-\frac{\pi^2 h^2}{2}$
+  $\rho(R_J) \leq 1-\frac{\pi^2 h^2}{2}$
    
   \begin{proof}
-   Proof by contradiction. Suppose $\exists y$ s.t. $Ry = (1-\frac{\pi^2 h^2}{2}+\epsilon)y$.
+   Proof by contradiction. Suppose $\exists y$ s.t. $R_Jy = (1-\frac{\pi^2 h^2}{2}+\epsilon)y$.
    Then,
    \begin{align}
-    Ay &= (D-DR)y = Dy-DRy \nonumber \\
+    Ay &= (D-DR_J)y = Dy-DR_Jy \nonumber \\
        &= 2y - 2(1-\frac{\pi^2 h^2}{2}+\epsilon)y \nonumber \\
        &= (\pi^2 h^2 - 2 \epsilon) y
    \end{align}
@@ -230,7 +230,7 @@
    \caption{Convergence rate and upper bound for convergence rate of Jacobi
             method on our model problem.}
   \end{figure}
-  \item In fact, the eigenvalues of $R$ range from $\mu_1^h \approx 1-\pi^2h^2/2$
+  \item In fact, the eigenvalues of $R_J$ range from $\mu_1^h \approx 1-\pi^2h^2/2$
         to $\mu_n^h \approx -\mu_1^h$.
  \end{itemize}
 \end{frame}
@@ -275,7 +275,7 @@
    u \leftarrow (D-L)^{-1}Uu + (D-L)^{-1}f
   \end{align}
   \item So, the iteration matrix in this case is $R_G=(D-L)^{-1}U$.
-  \item It turns out that $\rho(R) \leq \left[\rho(R_J)\right]^{2}$.
+  \item It turns out that $\rho(R_G) \leq \left[\rho(R_J)\right]^{2}$.
   \item So, it converges twice as fast as the Jacobi method.
   \item For the proof, see
         \hyperlink{gaussSeidelProof}{\beamergotobutton{GS Spectrum Proof}}
@@ -340,7 +340,7 @@
  \begin{itemize}
   \item We can also apply damping to the Gauss-Seidel iteration.
   \begin{align}
-   R_G(\omega) = (1-\omega)I + \omega R_J.
+   R_G(\omega) = (1-\omega)I + \omega R_G.
   \end{align}
   \item Since $\mu_i^h = \cos^2(i\pi h)$, $\mu_i^h(\omega) = 1 - \omega + \omega \cos^2(i\pi h)$.
   \item Notice that $0 \leq \omega \leq 2$ gives a spectral radius under 1 (convergence).
